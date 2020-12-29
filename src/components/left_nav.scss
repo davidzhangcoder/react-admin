@@ -1,0 +1,23 @@
+.left_nav{
+    height:100%;
+    width:100%;
+    .left_nav_top{
+        height: 100px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        // border: 1px solid white;
+        img{
+            width: 60px;
+            height: 60px;
+            margin-right: 10px;
+        }
+        h2{
+            color: white;
+            font-size: 20px;
+            margin-top: 7px;
+        }
+    }
+}
