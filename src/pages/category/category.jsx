@@ -75,16 +75,19 @@ let params = {
 class Category extends React.Component {
     constructor(props) {
         super(props)
-
+        console.log("Category - constructor");
         this.state = {
-            showAddCategoryDialog: false,
-            showEditCategoryDialog: false,
+            // showAddCategoryDialog: false,
+            // showEditCategoryDialog: false,
+            categoryForEdit:{}
         }
 
         this.form = {};
         this.parentID = 0;
         this.categoryForEdit = {};
-        this.categoryNameInput = null
+        // this.categoryNameInput = null
+        this.addDialog = null;
+        this.editDialog = null;
         this.columns = [
             {
                 title: '分类的名城',
@@ -108,84 +111,87 @@ class Category extends React.Component {
     
     }
 
-    setCategoryNameInputRef = e => this.categoryNameInput = e
+    // setCategoryNameInputRef = e => this.categoryNameInput = e
+
+    setAddDialogRef = e => this.addDialog = e;
+
+    setEditDialogRef = e => this.editDialog = e;
 
     showEditCategoryDialog = (category) => {
-        this.categoryForEdit = category
-        this.setState({ showEditCategoryDialog: true });
+        // console.log("showEditCategoryDialog", category);
+        // this.categoryForEdit = category
+        // this.setState({ showEditCategoryDialog: true });
+
+        this.setState({categoryForEdit:category})
+        this.editDialog.showDialog();
     }
 
-    renderEditContent = () => {
-        const ui = (<EditForm
-            category={this.categoryForEdit}
-            categoryNameInputRef = {this.setCategoryNameInputRef}
-            >
-        </EditForm>)
-        return ui;
-    }
+    // renderEditContent = () => {
+    //     const ui = (<EditForm
+    //         category={this.categoryForEdit}
+    //         categoryNameInputRef = {this.setCategoryNameInputRef}
+    //         >
+    //     </EditForm>)
+    //     return ui;
+    // }
 
-    handleOkForUpdate = async () => {
-        console.log(categoryNameInputRef.value);
-        this.category.name = categoryNameInputRef.value;
+    // handleOkForUpdate = async () => {
+    //     console.log(categoryNameInputRef.value);
+    //     this.category.name = categoryNameInputRef.value;
 
-        // //do validate
-        // if( !categoryNameInput || !categoryNameInput.value.trim) {
-        //     message.warn("分类名不能为空");
-        // }
+    //     // //do validate
+    //     // if( !categoryNameInput || !categoryNameInput.value.trim) {
+    //     //     message.warn("分类名不能为空");
+    //     // }
 
-        // this.setState( (state,props) => ({showEditCategoryDialog:false}))
-        // const response = await reqSaveCategory(this.category)
-        // const { data, status } = response;
-        // if (status === 200) {
-        //     message.success("添加分类成功")
-        // }
-    }
+    //     // this.setState( (state,props) => ({showEditCategoryDialog:false}))
+    //     // const response = await reqSaveCategory(this.category)
+    //     // const { data, status } = response;
+    //     // if (status === 200) {
+    //     //     message.success("添加分类成功")
+    //     // }
+    // }
 
     showAddCategoryDialog = (event) => {
         // event.preventDefault();
-        this.setState({ showAddCategoryDialog: true });
+        // this.setState({ showAddCategoryDialog: true });
+        this.addDialog.showDialog();
         this.props.getCategoriesByParentID(this.parentID)
     }
 
-    setForm = (form) => {
-        this.form = form;
-    }
+    // setForm = (form) => {
+    //     this.form = form;
+    // }
 
-    renderAddContent = (form) => {
-        // console.log("renderContent", this.props.categoriesByParent);
-        const ui = (<AddForm setForm={this.setForm} categories={this.props.categoriesByParent}></AddForm>)
-        return ui;
-    }
+    // handleOkForAdd = async () => {
+    //     // console.log(this.form.getFieldsValue());
+    //     this.form.validateFields(async (err, values) => {
+    //         if (!err) {
+    //             this.setState({ showAddCategoryDialog: false });
+    //             const { parentCategoryID, categoryName } = values
+    //             const category = { parent_id:parentCategoryID, name:categoryName }
+    //             const response = await reqSaveCategory(category)
+    //             const { data, status } = response;
+    //             console.log(response);
+    //             if (status === 200) {
+    //                 message.success("添加分类成功")
+    //             }
+    //             else {
+    //                 console
+    //             }
+    //         }
+    //     }
+    //     );
+    //     // this.setState({ showAddCategoryDialog: false });
+    // }
 
-    handleOkForAdd = async () => {
-        // console.log(this.form.getFieldsValue());
-        this.form.validateFields(async (err, values) => {
-            if (!err) {
-                this.setState({ showAddCategoryDialog: false });
-                const { parentCategoryID, categoryName } = values
-                const category = { parent_id:parentCategoryID, name:categoryName }
-                const response = await reqSaveCategory(category)
-                const { data, status } = response;
-                console.log(response);
-                if (status === 200) {
-                    message.success("添加分类成功")
-                }
-                else {
-                    console
-                }
-            }
-        }
-        );
-        // this.setState({ showAddCategoryDialog: false });
-    }
-
-    handlecancel = () => {
-        this.setState({ showAddCategoryDialog: false });
-        this.setState( (state,props) => ({showEditCategoryDialog:false}))
-    }
+    // handlecancel = () => {
+    //     this.setState({ showAddCategoryDialog: false });
+    //     this.setState( (state,props) => ({showEditCategoryDialog:false}))
+    // }
 
     render() {
-        // console.log('this.props.categoriesByPage: ', this.props.categoriesByPage)
+        console.log('this.props.categoriesByPage: ', this.props.categoriesByPage)
         if (this.props.isLoadingGetCategoriesByPage) {
             return (
                 <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -208,19 +214,18 @@ class Category extends React.Component {
 
                     <AddEditCategoryDialog
                         title="添加分类"
-                        visible={this.props.isLoadedGetCategoriesByParentID && this.state.showAddCategoryDialog}
-                        handleOk={this.handleOkForAdd}
-                        handlecancel={this.handlecancel}
-                        renderContent={this.renderAddContent}
+                        type="add"
+                        categoriesByParent={this.props.categoriesByParent}
+                        readyToShow={this.props.isLoadedGetCategoriesByParentID}
+                        ref={this.setAddDialogRef}
                     >
                     </AddEditCategoryDialog>
 
                     <AddEditCategoryDialog
                         title="修改分类"
-                        visible={this.state.showEditCategoryDialog}
-                        handleOk={this.handleOkForUpdate}
-                        handlecancel={this.handlecancel}
-                        renderContent={this.renderEditContent}
+                        type="edit"
+                        categoryForEdit={this.state.categoryForEdit}
+                        ref={this.setEditDialogRef}
                     >
                     </AddEditCategoryDialog>
 
@@ -237,6 +242,8 @@ class Category extends React.Component {
     }
 }
 
+//1.通过React-Redux设置props,会触发render
+//如相editform中设置category={this.props.categoryForEdit}，并不会触发render
 const mappingProps = state => {
     // console.log("mappingProps", state);
     return {

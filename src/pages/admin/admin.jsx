@@ -22,9 +22,15 @@ const { Footer, Sider, Content } = Layout;
 class Admin extends Component {
   constructor(props) {
     super(props)
+
+    this.obj = {
+      name:"jack"
+    }
+
     this.state = {
       showAddCategory: false,
-      count_test: 1
+      count_test: 1,
+      obj:this.obj
     }
     this.form = {};
 
@@ -91,6 +97,11 @@ class Admin extends Component {
     // // console.log("final",this.state)
   }
 
+  doStateTest = () => {
+    this.obj.name="tom";
+    this.setState({obj:this.obj})
+  }
+
   render() {
     // console.log('Admin - render()')
 
@@ -132,6 +143,12 @@ class Admin extends Component {
     //     <Button type="primary" icon="plus" onClick={this.doCountTest}>
     //       <span>测试 count_test</span>
     //     </Button>
+    //     <hr/>
+    //     <Button type="primary" icon="plus" onClick={this.doStateTest}>
+    //       <span>测试state中对象的值</span>
+    //     </Button>
+    //     <br/>
+    //     name: {this.state.obj.name}
     //     <div>
     //       =======
     //                 <Route path="/admin/test" component={TestContent} ></Route>

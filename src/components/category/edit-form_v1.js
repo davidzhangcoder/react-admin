@@ -4,7 +4,6 @@ import { Form, Input } from 'antd'
 class EditForm extends React.Component {
     constructor(props) {
         super(props)
-        console.log("EditForm - constructor");
         this.state = {
             name: props.category.name
         }
@@ -12,11 +11,10 @@ class EditForm extends React.Component {
 
     changeCategoryName = (e) => {
         console.log(e.target.value)
-        this.setState({ name: e.target.value })
+        this.setState({name:e.target.value})
     }
 
     render() {
-        console.log("EditForm - render", this.props.category)
         const form = this.props.form
         const { getFieldDecorator } = form;
 
@@ -57,11 +55,6 @@ class EditForm extends React.Component {
             </Fragment>
         );
         return ui
-    }
-
-    componentWillReceiveProps(nextProps) {
-        // console.log("componentWillReceiveProps: ", !nextProps)
-        this.setState({ name: nextProps.category.name });
     }
 }
 
