@@ -12,7 +12,7 @@ export default class AddEditCategoryDialog extends React.Component {
 
     constructor(props) {
         super(props)
-        console.log("AddEditCategoryDialog - constructor");
+        // console.log("AddEditCategoryDialog - constructor");
         this.state = {
             showDialog: false
         }
@@ -76,7 +76,7 @@ export default class AddEditCategoryDialog extends React.Component {
     }
 
     render() {
-        console.log("AddEditCategoryDialog - render", this.props.type, this.props.categoryForEdit);
+        // console.log("AddEditCategoryDialog - render", this.props.type, this.props.categoryForEdit);
         if (this.props.type === 'add') {
             const ui = (
                 <Modal

@@ -4,19 +4,19 @@ import { Form, Input } from 'antd'
 class EditForm extends React.Component {
     constructor(props) {
         super(props)
-        console.log("EditForm - constructor");
+        // console.log("EditForm - constructor");
         this.state = {
             name: props.category.name
         }
     }
 
     changeCategoryName = (e) => {
-        console.log(e.target.value)
+        // console.log(e.target.value)
         this.setState({ name: e.target.value })
     }
 
     render() {
-        console.log("EditForm - render", this.props.category)
+        // console.log("EditForm - render", this.props.category)
         const form = this.props.form
         const { getFieldDecorator } = form;
 
