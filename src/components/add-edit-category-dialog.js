@@ -33,20 +33,21 @@ export default class AddEditCategoryDialog extends React.Component {
     }
 
     handleOkForUpdate = async () => {
-        console.log(categoryNameInputRef.value);
-        this.category.name = categoryNameInputRef.value;
+        // console.log(this.categoryNameInput.input.value);
+        let category = Object.assign({},this.props.categoryForEdit);
+        category.name = this.categoryNameInput.input.value;
 
         //do validate
-        if( !categoryNameInput || !categoryNameInput.value.trim) {
+        if( !this.categoryNameInput || !this.categoryNameInput.input.value.trim()) {
             message.warn("分类名不能为空");
         }
 
-        this.handleCancel();
-        const response = await reqSaveCategory(this.category)
+        const response = await reqSaveCategory(category)
         const { data, status } = response;
         if (status === 200) {
             message.success("添加分类成功")
         }
+        this.handleCancel();
     }
 
     handleOkForAdd = async () => {
