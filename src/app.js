@@ -20,3 +20,8 @@ class App extends Component {
 }
 
 export default App;
+
+//p53, p62
+//p536
+
+//react1,react2,flex,webpack,promise

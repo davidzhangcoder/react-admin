@@ -63,16 +63,26 @@ import {
 //     },
 // ];
 
-let params = {
-    key: '',
-    descending: true,
-    page: 0,
-    rowsPerPage: 5,
-    sortBy: "id"
-};
+// let params = {
+//     key: '',
+//     descending: true,
+//     page: 0,
+//     rowsPerPage: 5,
+//     sortBy: "id"
+// };
 
+const PAGE_SIZE = 5;
 
 class Category extends React.Component {
+
+    params = {
+        key: '',
+        descending: true,
+        page: 0,
+        rowsPerPage: PAGE_SIZE,
+        sortBy: "id"
+    };
+
     constructor(props) {
         super(props)
         console.log("Category - constructor");
@@ -109,9 +119,9 @@ class Category extends React.Component {
     }
 
 
-    setAddDialogRef = e => this.addDialog = e;
+    // setAddDialogRef = e => this.addDialog = e;
 
-    setEditDialogRef = e => this.editDialog = e;
+    // setEditDialogRef = e => this.editDialog = e;
 
     showEditCategoryDialog = (category) => {
         this.setState({categoryForEdit:category})
@@ -124,8 +134,14 @@ class Category extends React.Component {
         this.props.getCategoriesByParentID(this.parentID)
     }
 
+    callBack = () => {
+        this.props.getCategoriesByPage(this.params);
+    }
+
     render() {
         console.log('this.props.categoriesByPage: ', this.props.categoriesByPage)
+
+        const { total, totalPage, items} = this.props.categoriesByPage
         if (this.props.isLoadingGetCategoriesByPage) {
             return (
                 <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -142,8 +158,18 @@ class Category extends React.Component {
                 <Card title="一级品类列表" extra={addButton} style={{ width: '100%', height: '100%' }}>
                     <Table
                         columns={this.columns}
-                        dataSource={this.props.categoriesByPage.items}
+                        dataSource={items}
                         rowKey="id"
+                        pagination = {{
+                            current: this.params.page,
+                            total: total,
+                            defaultPageSize: PAGE_SIZE,
+                            showQuickJumper: true,
+                            onChange: (page)=>{
+                                this.params.page = page;
+                                this.props.getCategoriesByPage(this.params);
+                            }             
+                        }}
                     />
 
                     <AddEditCategoryDialog
@@ -151,7 +177,8 @@ class Category extends React.Component {
                         type="add"
                         categoriesByParent={this.props.categoriesByParent}
                         readyToShow={this.props.isLoadedGetCategoriesByParentID}
-                        ref={this.setAddDialogRef}
+                        ref={ (e) => this.addDialog = e }
+                        callBack={this.callBack}
                     >
                     </AddEditCategoryDialog>
 
@@ -159,7 +186,8 @@ class Category extends React.Component {
                         title="修改分类"
                         type="edit"
                         categoryForEdit={this.state.categoryForEdit}
-                        ref={this.setEditDialogRef}
+                        ref={ (e) => this.editDialog = e }
+                        callBack={this.callBack}
                     >
                     </AddEditCategoryDialog>
 
@@ -172,7 +200,7 @@ class Category extends React.Component {
 
     componentDidMount() {
         // this.props.isLoadingGetCategoriesByPage = true;
-        this.props.getCategoriesByPage(params);
+        this.props.getCategoriesByPage(this.params);
     }
 }
 

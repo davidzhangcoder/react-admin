@@ -45,7 +45,8 @@ export default class AddEditCategoryDialog extends React.Component {
         const response = await reqSaveCategory(category)
         const { data, status } = response;
         if (status === 200) {
-            message.success("添加分类成功")
+            message.success("修改分类成功")
+            this.props.callBack()
         }
         this.handleCancel();
     }
@@ -62,9 +63,9 @@ export default class AddEditCategoryDialog extends React.Component {
                 console.log(response);
                 if (status === 200) {
                     message.success("添加分类成功")
+                    this.props.callBack()
                 }
                 else {
-                    console
                 }
             }
         }
@@ -84,7 +85,10 @@ export default class AddEditCategoryDialog extends React.Component {
                     title={this.props.title}
                     visible={this.state.showDialog && this.props.readyToShow}
                     onOk={this.handleOkForAdd}
-                    onCancel={this.handleCancel}
+                    onCancel={()=>{
+                        this.form.resetFields();
+                        this.handleCancel();
+                    }}
                 >
                     <AddForm
                         setForm={this.setForm}
