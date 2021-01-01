@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Card } from 'antd';
 import { Button } from 'antd';
-import { Table, Divider, Tag } from 'antd';
+import { Table, Divider, Tag, Icon } from 'antd';
 import { Spin } from 'antd';
 import { message } from 'antd';
 
@@ -80,14 +80,16 @@ class Category extends React.Component {
         descending: true,
         page: 0,
         rowsPerPage: PAGE_SIZE,
-        sortBy: "id"
+        sortBy: "id",
+        parentID: 0,
     };
 
     constructor(props) {
         super(props)
         console.log("Category - constructor");
         this.state = {
-            categoryForEdit:{}
+            categoryForEdit: {},
+            navCategories: []
         }
 
         this.form = {};
@@ -109,13 +111,20 @@ class Category extends React.Component {
                 render: (category) => (
                     <span>
                         <button onClick={() => this.showEditCategoryDialog(category)} type="primary"><span>修改分类</span></button>
-                        <Divider type="vertical" />
-                        <a><span>查看子分类</span></a>
+                        {
+                            category.parent ? (
+                                <Fragment>
+                                    <Divider type="vertical" />
+                                    <button onClick={() => this.showSubCategory(category)} type="primary"><span>查看子分类</span></button>
+                                </Fragment>
+                            ) : null
+                        }
                     </span>
                 ),
             },
         ];
-    
+
+        this.showSubCategory = this.showSubCategory.bind(this);
     }
 
 
@@ -123,14 +132,39 @@ class Category extends React.Component {
 
     // setEditDialogRef = e => this.editDialog = e;
 
+    getNewParameter = (parentID) => {
+        return {
+            key: '',
+            descending: true,
+            page: 0,
+            rowsPerPage: PAGE_SIZE,
+            sortBy: "id",
+            parentID: parentID,
+        };
+    }
+
+    showSubCategory(category) {
+        this.state.navCategories.push(category);
+        this.params = this.getNewParameter(category.id);
+        this.props.getCategoriesByPage(this.params);
+    }
+
+    showSubCategoryFromNav(index, id) {
+        this.state.navCategories.splice(index);
+        this.setState(this.state.navCategories);
+
+        this.params = this.getNewParameter(id);
+        this.props.getCategoriesByPage(this.params);
+    }
+
     showEditCategoryDialog = (category) => {
-        this.setState({categoryForEdit:category})
+        this.setState({ categoryForEdit: category })
         this.editDialog.showDialog();
     }
 
     showAddCategoryDialog = (event) => {
         // event.preventDefault();
-         this.addDialog.showDialog();
+        this.addDialog.showDialog();
         this.props.getCategoriesByParentID(this.parentID)
     }
 
@@ -138,10 +172,32 @@ class Category extends React.Component {
         this.props.getCategoriesByPage(this.params);
     }
 
+    getTitle = () => {
+        if (this.state.navCategories.length == 0)
+            return "一级品类列表"
+        else {
+            let nav = this.state.navCategories.map((item, index) => {
+                if (index + 1 === this.state.navCategories.length)
+                    return <span>{item.name}</span>
+                else
+                    return <span key={index}>
+                        <span><button type="primary" onClick={() => this.showSubCategoryFromNav(index + 1, item.id)}>{item.name}</button></span>
+                        <Icon type='arrow-right' style={{ marginRight: 5 }} />
+                    </span>
+            });
+            nav.unshift(
+                <span key="-1">
+                    <span><button type="primary" onClick={() => this.showSubCategoryFromNav(0, 0)}>一级品类列表</button></span>
+                    <Icon type='arrow-right' style={{ marginRight: 5 }} />
+                </span>);
+            return nav;
+        }
+    }
+
     render() {
         console.log('this.props.categoriesByPage: ', this.props.categoriesByPage)
 
-        const { total, totalPage, items} = this.props.categoriesByPage
+        const { total, totalPage, items } = this.props.categoriesByPage
         if (this.props.isLoadingGetCategoriesByPage) {
             return (
                 <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -149,26 +205,28 @@ class Category extends React.Component {
                 </div>);
         }
         else {
+            const title = this.getTitle();
+
             const addButton = (
                 <Button type="primary" icon="plus" onClick={this.showAddCategoryDialog}>
                     添加分类
                 </Button>
             );
             const ui = (
-                <Card title="一级品类列表" extra={addButton} style={{ width: '100%', height: '100%' }}>
+                <Card title={title} extra={addButton} style={{ width: '100%', height: '100%' }}>
                     <Table
                         columns={this.columns}
                         dataSource={items}
                         rowKey="id"
-                        pagination = {{
+                        pagination={{
                             current: this.params.page,
                             total: total,
                             defaultPageSize: PAGE_SIZE,
                             showQuickJumper: true,
-                            onChange: (page)=>{
+                            onChange: (page) => {
                                 this.params.page = page;
                                 this.props.getCategoriesByPage(this.params);
-                            }             
+                            }
                         }}
                     />
 
@@ -177,7 +235,7 @@ class Category extends React.Component {
                         type="add"
                         categoriesByParent={this.props.categoriesByParent}
                         readyToShow={this.props.isLoadedGetCategoriesByParentID}
-                        ref={ (e) => this.addDialog = e }
+                        ref={(e) => this.addDialog = e}
                         callBack={this.callBack}
                     >
                     </AddEditCategoryDialog>
@@ -186,7 +244,7 @@ class Category extends React.Component {
                         title="修改分类"
                         type="edit"
                         categoryForEdit={this.state.categoryForEdit}
-                        ref={ (e) => this.editDialog = e }
+                        ref={(e) => this.editDialog = e}
                         callBack={this.callBack}
                     >
                     </AddEditCategoryDialog>
