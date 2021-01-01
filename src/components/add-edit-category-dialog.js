@@ -57,7 +57,7 @@ export default class AddEditCategoryDialog extends React.Component {
             if (!err) {
                 this.handleCancel();
                 const { parentCategoryID, categoryName } = values
-                const category = { parent_id: parentCategoryID, name: categoryName }
+                const category = { parentID: parentCategoryID, name: categoryName }
                 const response = await reqSaveCategory(category)
                 const { data, status } = response;
                 console.log(response);
