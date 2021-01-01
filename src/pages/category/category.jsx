@@ -153,8 +153,8 @@ class Category extends React.PureComponent {
         this.state.navCategories.splice(index);
         this.setState({navCategories:[...this.state.navCategories]});
 
-        // this.params = this.getNewParameter(id);
-        // this.props.getCategoriesByPage(this.params);
+        this.params = this.getNewParameter(id);
+        this.props.getCategoriesByPage(this.params);
     }
 
     showEditCategoryDialog = (category) => {
