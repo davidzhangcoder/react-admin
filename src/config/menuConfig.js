@@ -5,6 +5,13 @@ const menuList = [
     icon: 'home', // 图标名称
     isPublic: true, // 公开的
   },
+
+  {
+    title: '品牌管理',
+    key: '/brand',
+    icon: 'product'
+  },
+
   {
     title: '商品',
     key: '/products',

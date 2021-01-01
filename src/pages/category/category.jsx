@@ -73,7 +73,7 @@ import {
 
 const PAGE_SIZE = 5;
 
-class Category extends React.Component {
+class Category extends React.PureComponent {
 
     params = {
         key: '',
@@ -151,10 +151,10 @@ class Category extends React.Component {
 
     showSubCategoryFromNav(index, id) {
         this.state.navCategories.splice(index);
-        this.setState(this.state.navCategories);
+        this.setState({navCategories:[...this.state.navCategories]});
 
-        this.params = this.getNewParameter(id);
-        this.props.getCategoriesByPage(this.params);
+        // this.params = this.getNewParameter(id);
+        // this.props.getCategoriesByPage(this.params);
     }
 
     showEditCategoryDialog = (category) => {
@@ -178,7 +178,7 @@ class Category extends React.Component {
         else {
             let nav = this.state.navCategories.map((item, index) => {
                 if (index + 1 === this.state.navCategories.length)
-                    return <span>{item.name}</span>
+                    return <span key={index}>{item.name}</span>
                 else
                     return <span key={index}>
                         <span><button type="primary" onClick={() => this.showSubCategoryFromNav(index + 1, item.id)}>{item.name}</button></span>
