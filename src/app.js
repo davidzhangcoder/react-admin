@@ -21,7 +21,7 @@ class App extends Component {
 
 export default App;
 
-//p53, p62
-//p536
+//p53, p62, p137-p141
+//p526-p541
 
-//react1,react2,flex,webpack,promise
+//react1-晓飞,react2-2020,flex,webpack,promise

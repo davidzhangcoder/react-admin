@@ -2,6 +2,7 @@ import {
     LOGIN,
     SET_LOGIN_STATUS,
     SET_HEADER_TITLE,
+    GET_BRANDS_LOADING,
     GET_BRANDS,
     GET_CATEGORIES_BY_PAGE,
     GET_CATEGORIES_BY_PARENTID,
@@ -36,8 +37,9 @@ export const setHeaderTitle = (title) => ({type:SET_HEADER_TITLE, data:title})
 
 export const getBrands = (param) => {
     return async dispatch => {
+        dispatch(sendDataToState(GET_BRANDS_LOADING,{}))
         const response = await reqBrands(param)
-        // console.log(response);
+        //  console.log(response);
         const { data, status } = response;
         if( status === 200)
             dispatch(getBrandsToState(data))

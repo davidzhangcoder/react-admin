@@ -10,7 +10,7 @@ import {
     getCategoriesByPage,
     getCategoriesByParentID
 } from '../../redux/actions'
-import AddEditCategoryDialog from '@/components/add-edit-category-dialog'
+import AddEditCategoryDialog from '@/components/category/add-edit-category-dialog'
 import AddForm from '@/components/category/add-form'
 import EditForm from '@/components/category/edit-form'
 import {

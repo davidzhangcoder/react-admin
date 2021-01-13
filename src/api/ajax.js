@@ -55,6 +55,10 @@ export const reqSaveCategory = (category) => {
     return ajax(BASE_URL +'/item-service/category/persistCategory', category, TYPES.POST)
 }
 
+export const reqSaveBrand = (brand) => {
+    return ajax(BASE_URL +'/item-service/brand/persistBrand', brand, TYPES.POST)
+}
+
 // export const reqWeather = () => {
 //     new Promise()
 //     jsonp(url, optins , ()=>{})

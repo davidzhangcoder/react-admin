@@ -1,21 +1,23 @@
 import React from 'react'
-import {combineReducers} from 'redux'
+import { combineReducers } from 'redux'
 
 import {
-    GET_BRANDS
+    GET_BRANDS,
+    GET_BRANDS_LOADING
 } from '../action_types'
 
 const initialBrands = {
-    brands:[],
-    totalBrands:0,
-    isLoading:true,
+    brandData: {},
+    isLoading: true,
 }
 function brands(state = initialBrands, action) {
     switch (action.type) {
         case GET_BRANDS:
-            return { ...action.data , isLoading: false};
+            return Object.assign({...state}, {brandData: action.data, isLoading: false} )
+        case GET_BRANDS_LOADING:
+            return Object.assign({}, initialBrands, {isLoading: true});
         default:
-            return initialBrands;
+            return state;
     }
 }
 
