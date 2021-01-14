@@ -6,12 +6,16 @@ const menuList = [
     isPublic: true, // 公开的
   },
 
+  // {
+  //   title: '品牌管理',
+  //   key: '/brand',
+  //   icon: 'product'
+  // },
   {
-    title: '品牌管理',
-    key: '/brand',
+    title: '品牌管理-hook',
+    key: '/brand-hook',
     icon: 'product'
   },
-
   {
     title: '商品',
     key: '/products',

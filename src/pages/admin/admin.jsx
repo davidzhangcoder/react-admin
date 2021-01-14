@@ -7,6 +7,7 @@ import LeftNav from '../../components/left_nav'
 import TestContent from '../test/TestContent';
 import Home from '../home/home'
 import Brand from '../brand/brand'
+import BrandHook from '../brand-hook/brand-hook'
 import Category from '../category/category'
 import Product from '../category/product'
 import User from '../user/user'
@@ -280,6 +281,7 @@ class Admin extends Component {
               <Route path="/home" component={Home}></Route>
               <Route path="/category" component={Category}></Route>
               <Route path="/brand" component={Brand}></Route>
+              <Route path="/brand-hook" component={BrandHook}></Route>
               <Route path="/product" component={Product}></Route>
               <Route path="/user" component={User}></Route>
               <Route path="/role" component={Role}></Route>

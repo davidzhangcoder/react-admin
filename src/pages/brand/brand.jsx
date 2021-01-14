@@ -139,4 +139,12 @@ const mapTodispatcher = {
     getBrands
 }
 
+// const test_mapTodispatcher = dispatcher => {
+//     return {
+//         getBrands: () => {
+//             return dispatcher(getBrands)
+//         }
+//     }
+// }
+
 export default connect(mapToProps, mapTodispatcher)(Brand);
