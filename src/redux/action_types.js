@@ -2,6 +2,8 @@ export const LOGIN = "LOGIN";
 
 export const SET_LOGIN_STATUS = "setLoginStatus";
 
+export const GET_USER_PERMISSIONS = "getUserPermissions";
+
 export const SET_HEADER_TITLE = "setHeaderTitle";
 
 export const GET_BRANDS_LOADING = "getBrandsLoading";

@@ -7,12 +7,15 @@ import scssObj from './left_nav.scss'
 import logo from '../assets/images/logo.png'
 import menuList from '../config/menuConfig';
 import {setHeaderTitle} from '../redux/actions'
+import AppPermissions from '../utils/AppPermissions'
 
 const { SubMenu } = Menu;
 
 class LeftNav extends React.Component {
     constructor(props) {
         super(props)
+        console.log("this.props.user: " , this.props.user);
+        this.appPermissions = new AppPermissions(this.props.user.permissions);
     }
 
     getMenuNodes = (menulist) => {
@@ -34,6 +37,9 @@ class LeftNav extends React.Component {
                 return ui;
             }
             else {
+                if( item.permissions && item.permissions.length > 0 && !this.appPermissions.hasAnyPermission(item.permissions) ) {
+                    return;
+                }
                 const ui = (
                     <Menu.Item key={item.key}>
                         <Icon type={item.icon} />
@@ -70,7 +76,7 @@ class LeftNav extends React.Component {
 }
 
 const mapProps = state => ({
-
+    user: state.user.user
 })
 
 const mapDispatch = {

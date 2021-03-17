@@ -8,6 +8,7 @@ import {
     GET_CATEGORIES_BY_PARENTID,
     GET_CATEGORIES_BY_PAGE_LOADING,
     GET_CATEGORIES_BY_PARENTID_LOADING,
+    GET_USER_PERMISSIONS,
 } from './action_types';
 
 import { 
@@ -15,9 +16,12 @@ import {
     reqBrands,
     reqCategoriesByPage,
     reqCategoriesByParentID,
+    reqGetUserPermissions
  } from '../api/ajax'
 
-const setLoginStatus = () => ({type:SET_LOGIN_STATUS, data:true})
+ import axios from 'axios'
+
+const setLoginStatus = (data) => ({type:SET_LOGIN_STATUS, data:data})
 
 const getBrandsToState = (brandsData) => ({type:GET_BRANDS, data:brandsData})
 
@@ -27,10 +31,30 @@ export const login = (username, password) => {
     return async dispatch => {
         const response = await reqLogin(username, password)
         console.log(response);
-        if( response.status === 200)
-            dispatch(setLoginStatus())
+        if( response.status === 200){
+            //localStorage.setItem("token", response.data);
+            //console.log(response.data)
+            axios.defaults.headers.common['Authorization'] = response.data.accessToken;
+            // console.log(axios.defaults.headers.common['Authorization'])
+
+            const userId = response.data.userId;
+            dispatch(getUserPermissions(response.data))
+            //dispatch(setLoginStatus(response.data))
+        }
     }
     // return { type: LOGIN, data: {username, password} };
+}
+
+export const getUserPermissions = (responsedata) => {
+    return async dispatch => {
+        const response = await reqGetUserPermissions();
+        console.log(response);
+        const { data, status } = response;
+        if( status == 200 ){
+            dispatch(sendDataToState(GET_USER_PERMISSIONS,data))
+            dispatch(setLoginStatus(responsedata))
+        }
+    }
 }
 
 export const setHeaderTitle = (title) => ({type:SET_HEADER_TITLE, data:title})

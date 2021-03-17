@@ -36,7 +36,7 @@ const BASE_URL = 'http://api.leyou.com/api';
 export const reqLogin = (username, password) => {
     // console.log(common)
     // console.log(common.stringify({username, password}));
-    return ajax(BASE_URL +'/auth/login', common.stringify({username, password}), TYPES.POST)
+    return ajax(BASE_URL +'/uaa/oauth2/login', {username, password}, TYPES.GET)
 }
 
 export const reqBrands = (param) => {
@@ -57,6 +57,10 @@ export const reqSaveCategory = (category) => {
 
 export const reqSaveBrand = (brand) => {
     return ajax(BASE_URL +'/item-service/brand/persistBrand', brand, TYPES.POST)
+}
+
+export const reqGetUserPermissions = () => {
+    return ajax(BASE_URL +'/user/getUserPermissions')
 }
 
 // export const reqWeather = () => {

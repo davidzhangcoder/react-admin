@@ -16,8 +16,10 @@ import Bar from '../charts/bar'
 import Line from '../charts/line'
 import Pie from '../charts/pie'
 import Header from '../../components/header'
+import Login from '../login/login'
 import AddEditCategoryDialog from '../../components/category/add-edit-category-dialog'
 import AddForm from '../../components/category/add-form'
+import { LOGIN } from '../../redux/action_types';
 
 const { Footer, Sider, Content } = Layout;
 
@@ -288,6 +290,7 @@ class Admin extends Component {
               <Route path="/charts/bar" component={Bar}></Route>
               <Route path="/charts/line" component={Line}></Route>
               <Route path="/charts/pie" component={Pie}></Route>
+              {/* <Route component={Login}></Route> */}
             </Switch>
           </Content>
           <Footer style={{ textAlign: 'center', color: '#cccccc' }}>推荐使用谷歌浏览器，可以获得更佳页面操作体验</Footer>
